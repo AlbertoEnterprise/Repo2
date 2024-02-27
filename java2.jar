@@ -1,0 +1,40 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class VulnerableApp {
+    public static void main(String[] args) {
+        String userInput = args[0]; // Supongamos que este es el input del usuario
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Conexión a la base de datos (supongamos que la base de datos está local y no tiene contraseña)
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/database", "root", "");
+
+            // Ejecución de una consulta SQL con el input del usuario concatenado directamente
+            stmt = con.createStatement();
+            String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
+            rs = stmt.executeQuery(query);
+
+            // Procesamiento de los resultados
+            while (rs.next()) {
+                System.out.println("Usuario encontrado: " + rs.getString("username"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Cierre de recursos
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
