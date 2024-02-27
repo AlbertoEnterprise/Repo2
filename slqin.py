@@ -13,7 +13,7 @@ def get_user(username):
     return user
 
 if __name__ == "__main__":
-    username = input("Ingrese el nombre de usuario: ")
+    username = input("Alberto: ")
     user = get_user(username)
     
     if user:
